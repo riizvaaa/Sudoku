@@ -3,6 +3,11 @@ body {
     text-align: center;
 }
 
+#timer {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
 #grid {
     display: grid;
     grid-template-columns: repeat(9, 50px);
