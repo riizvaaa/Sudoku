@@ -1,8 +1,40 @@
 const grid = document.getElementById('grid');
 const solveBtn = document.getElementById('solve-btn');
 const newGameBtn = document.getElementById('new-game-btn');
+const timerElement = document.getElementById('timer');
 
 let puzzle = [];
+let timerInterval;
+let seconds = 0;
+let minutes = 0;
+
+function formatTime() {
+    const f_seconds = seconds < 10 ? '0' + seconds : seconds;
+    const f_minutes = minutes < 10 ? '0' + minutes : minutes;
+    return `${f_minutes}:${f_seconds}`;
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+        }
+        timerElement.textContent = formatTime();
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function resetTimer() {
+    stopTimer();
+    seconds = 0;
+    minutes = 0;
+    timerElement.textContent = formatTime();
+}
 
 function isValid(board, row, col, k) {
     for (let i = 0; i < 9; i++) {
@@ -106,11 +138,14 @@ function renderPuzzle() {
 function solve() {
     solveSudoku(puzzle);
     renderPuzzle();
+    stopTimer();
 }
 
 function newGame() {
     puzzle = generatePuzzle();
     renderPuzzle();
+    resetTimer();
+    startTimer();
 }
 
 solveBtn.addEventListener('click', solve);
